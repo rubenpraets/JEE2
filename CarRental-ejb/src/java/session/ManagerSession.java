@@ -8,16 +8,18 @@ import javax.ejb.Stateless;
 import rental.Car;
 import rental.CarRentalCompany;
 import rental.CarType;
-import rental.RentalStore;
+//import rentalstore.RentalStore;
 import rental.Reservation;
 
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
     
+    private QueryClass queryClass = new QueryClass();
+    
     @Override
     public Set<CarType> getCarTypes(String company) {
         try {
-            return new HashSet<CarType>(RentalStore.getRental(company).getAllTypes());
+            return new HashSet<CarType>(queryClass.getRental(company).getAllTypes());
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -28,7 +30,7 @@ public class ManagerSession implements ManagerSessionRemote {
     public Set<Integer> getCarIds(String company, String type) {
         Set<Integer> out = new HashSet<Integer>();
         try {
-            for(Car c: RentalStore.getRental(company).getCars(type)){
+            for(Car c: queryClass.getRental(company).getCars(type)){
                 out.add(c.getId());
             }
         } catch (IllegalArgumentException ex) {
@@ -41,7 +43,7 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public int getNumberOfReservations(String company, String type, int id) {
         try {
-            return RentalStore.getRental(company).getCar(id).getReservations().size();
+            return queryClass.getRental(company).getCar(id).getReservations().size();
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
@@ -52,7 +54,7 @@ public class ManagerSession implements ManagerSessionRemote {
     public int getNumberOfReservations(String company, String type) {
         Set<Reservation> out = new HashSet<Reservation>();
         try {
-            for(Car c: RentalStore.getRental(company).getCars(type)){
+            for(Car c: queryClass.getRental(company).getCars(type)){
                 out.addAll(c.getReservations());
             }
         } catch (IllegalArgumentException ex) {

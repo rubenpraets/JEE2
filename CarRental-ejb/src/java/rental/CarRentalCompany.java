@@ -1,5 +1,6 @@
 package rental;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -8,14 +9,24 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.*;
+import static javax.persistence.CascadeType.*;
 
-public class CarRentalCompany {
+@Entity
+public class CarRentalCompany implements Serializable{
 
     private static Logger logger = Logger.getLogger(CarRentalCompany.class.getName());
+    
+    @Id
     private String name;
+    
+    @OneToMany(mappedBy="CarRentalCompany",cascade=ALL)
     private List<Car> cars;
+    
+    @ManyToMany(mappedBy="CarRentalCompany", cascade=PERSIST)
     private Set<CarType> carTypes = new HashSet<CarType>();
-	private List<String> regions;
+    
+    private List<String> regions;
 
 	
     /***************
@@ -30,6 +41,10 @@ public class CarRentalCompany {
         for (Car car : cars) {
             carTypes.add(car.getType());
         }
+    }
+    
+    public CarRentalCompany(){
+        
     }
 
     /********
@@ -166,7 +181,7 @@ public class CarRentalCompany {
         }
         Car car = availableCars.get((int) (Math.random() * availableCars.size()));
 
-        Reservation res = new Reservation(quote, car.getId());
+        Reservation res = new Reservation(quote, car);
         car.addReservation(res);
         return res;
     }

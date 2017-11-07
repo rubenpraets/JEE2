@@ -5,8 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import rental.CarType;
-import rental.Reservation;
+import static javax.persistence.CascadeType.*;
 
 @Entity
 public class Car implements Serializable{
@@ -75,7 +74,7 @@ public class Car implements Serializable{
         reservations.remove(reservation);
     }
 
-    @OneToMany(mappedBy="Car")
+    @OneToMany(mappedBy="Car", cascade=ALL)
     public Set<Reservation> getReservations() {
         return reservations;
     }
