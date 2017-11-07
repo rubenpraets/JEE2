@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -140,7 +139,7 @@ public abstract class AbstractTesting {
 		List<String> result = new LinkedList<String>();
 		StringTokenizer stz = new StringTokenizer(regions, ":");
 		while (stz.hasMoreTokens()){
-			result.add(stz.nextToken());
+			result.add(st.nextToken());
 		}
 		return result;
 	}
