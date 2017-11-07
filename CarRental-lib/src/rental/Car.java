@@ -78,4 +78,8 @@ public class Car implements Serializable{
     public Set<Reservation> getReservations() {
         return reservations;
     }
+    
+    public void setReservations(Set<Reservation> res){
+        reservations = res;
+    }
 }
