@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import rental.Car;
 import rental.CarRentalCompany;
 import rental.CarType;
@@ -15,6 +17,9 @@ import rental.Reservation;
 public class ManagerSession implements ManagerSessionRemote {
     
     private QueryClass queryClass = new QueryClass();
+    
+    @PersistenceContext
+    private EntityManager em;
     
     @Override
     public Set<CarType> getCarTypes(String company) {
@@ -28,7 +33,7 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public Set<Integer> getCarIds(String company, String type) {
-        Set<Integer> out = new HashSet<Integer>();
+        Set<Integer> out = new HashSet<>();
         try {
             for(Car c: queryClass.getRental(company).getCars(type)){
                 out.add(c.getId());
@@ -52,7 +57,7 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public int getNumberOfReservations(String company, String type) {
-        Set<Reservation> out = new HashSet<Reservation>();
+        Set<Reservation> out = new HashSet<>();
         try {
             for(Car c: queryClass.getRental(company).getCars(type)){
                 out.addAll(c.getReservations());
@@ -62,6 +67,22 @@ public class ManagerSession implements ManagerSessionRemote {
             return 0;
         }
         return out.size();
+    }
+
+    @Override
+    public void addCarRentalCompany(CarRentalCompany crc) {
+        em.persist(crc);
+    }
+
+    @Override
+    public void addCar(Car car, CarRentalCompany crc) {
+        crc.addCar(car);
+        em.persist(car);
+    }
+
+    @Override
+    public void addCarType(CarType carType) {
+        em.persist(carType);
     }
 
 }

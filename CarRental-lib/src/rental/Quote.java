@@ -2,21 +2,35 @@ package rental;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+@MappedSuperclass
 public class Quote implements Serializable {
 
+    @Temporal(TemporalType.DATE)
     private Date startDate;
+    
+    @Temporal(TemporalType.DATE)
     private Date endDate;
+    
     private String carRenter;
-    private String rentalCompany;
-    private String carType;
+    
+    @ManyToOne
+    private CarRentalCompany rentalCompany;
+    
+    @ManyToOne
+    private CarType carType;
+    
     private double rentalPrice;
     
     /***************
      * CONSTRUCTOR *
      ***************/
 
-    public Quote(String carRenter, Date start, Date end, String rentalCompany, String carType, double rentalPrice) {
+    public Quote(String carRenter, Date start, Date end, CarRentalCompany rentalCompany, CarType carType, double rentalPrice) {
         this.carRenter = carRenter;
         this.startDate = start;
         this.endDate = end;
@@ -41,7 +55,7 @@ public class Quote implements Serializable {
         return carRenter;
     }
 
-    public String getRentalCompany() {
+    public CarRentalCompany getRentalCompany() {
         return rentalCompany;
     }
 
@@ -49,7 +63,7 @@ public class Quote implements Serializable {
         return rentalPrice;
     }
     
-    public String getCarType() {
+    public CarType getCarType() {
 	return carType;
     }
     

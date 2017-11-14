@@ -143,10 +143,6 @@ public class CarRentalCompany implements Serializable{
         }
         return availableCars;
     }
-    
-    public void addCar(Car car){
-        cars.add(car);
-    }
 
     /****************
      * RESERVATIONS *

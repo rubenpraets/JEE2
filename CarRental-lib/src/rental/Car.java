@@ -74,7 +74,7 @@ public class Car implements Serializable{
         reservations.remove(reservation);
     }
 
-    @OneToMany(mappedBy="Car", cascade=ALL)
+    @OneToMany(mappedBy="Car", targetEntity=Reservation.class, cascade=ALL)
     public Set<Reservation> getReservations() {
         return reservations;
     }

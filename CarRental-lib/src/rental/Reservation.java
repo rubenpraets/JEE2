@@ -1,11 +1,14 @@
 package rental;
 
+import java.util.Date;
 import static javax.persistence.CascadeType.PERSIST;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import static javax.persistence.TemporalType.DATE;
 
 @Entity
 public class Reservation extends Quote {
