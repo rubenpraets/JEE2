@@ -85,4 +85,21 @@ public class ManagerSession implements ManagerSessionRemote {
         em.persist(carType);
     }
 
+    @Override
+    public Set<String> getBestClients() {
+        return queryClass.bestClients();
+    }
+
+    @Override
+    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) {
+        return queryClass.mostPopularCarType(carRentalCompanyName, year);
+    }
+
+    @Override
+    public int getNumberOfReservationsForCarType(String carRentalName, String carType) {
+        return queryClass.getNbResOfCTInCRC(carRentalName, carType);
+    }
+    
+    
+
 }

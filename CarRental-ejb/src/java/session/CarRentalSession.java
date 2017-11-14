@@ -1,12 +1,14 @@
 package session;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
+import rental.CarRentalCompany;
 import rental.CarType;
 import rental.Quote;
 //import rentalstore.RentalStore;
@@ -77,6 +79,17 @@ public class CarRentalSession implements CarRentalSessionRemote {
             throw new IllegalStateException("name already set");
         }
         renter = name;
+    }
+
+    @Override
+    public void checkForAvailableCarTypes(Date start, Date end) {
+        Set<CarType> carTypes = new HashSet<>();
+        for (CarRentalCompany crc: queryClass.getRentals().values()){
+            carTypes.addAll(crc.getAvailableCarTypes(start, end));
+        }
+        for(CarType c: carTypes){
+            System.out.println(c);
+        }
     }
     
 }

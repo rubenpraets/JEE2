@@ -11,10 +11,12 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.InitialContext;
 import rental.Car;
 import rental.CarRentalCompany;
 import rental.CarType;
 import rental.Reservation;
+import rental.ReservationConstraints;
 import session.CarRentalSessionRemote;
 import session.ManagerSessionRemote;
 
@@ -35,7 +37,7 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     @Override
     protected Set<String> getBestClients(ManagerSessionRemote ms) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ms.getBestClients();
     }
 
     @Override
@@ -45,37 +47,43 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     @Override
     protected CarType getMostPopularCarTypeIn(ManagerSessionRemote ms, String carRentalCompanyName, int year) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ms.getMostPopularCarTypeIn(carRentalCompanyName, year);
     }
 
     @Override
     protected CarRentalSessionRemote getNewReservationSession(String name) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        InitialContext context = new InitialContext();
+        CarRentalSessionRemote reservationSession = (CarRentalSessionRemote) 
+                    context.lookup(CarRentalSessionRemote.class.getName());
+        return reservationSession;
     }
 
     @Override
     protected ManagerSessionRemote getNewManagerSession(String name, String carRentalName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        InitialContext context = new InitialContext();
+        ManagerSessionRemote managerSession = (ManagerSessionRemote) 
+                    context.lookup(ManagerSessionRemote.class.getName());
+        return managerSession;
     }
 
     @Override
     protected void checkForAvailableCarTypes(CarRentalSessionRemote session, Date start, Date end) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session.checkForAvailableCarTypes(start, end);
     }
 
     @Override
     protected void addQuoteToSession(CarRentalSessionRemote session, String name, Date start, Date end, String carType, String region) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session.createQuote(region, new ReservationConstraints(start, end, carType, region));
     }
 
     @Override
     protected List<Reservation> confirmQuotes(CarRentalSessionRemote session, String name) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return session.confirmQuotes();
     }
 
     @Override
     protected int getNumberOfReservationsForCarType(ManagerSessionRemote ms, String carRentalName, String carType) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ms.getNumberOfReservationsForCarType(carRentalName, carType);
     }
 
     public static void loadRental(String datafile, ManagerSessionRemote ms) {
@@ -134,8 +142,8 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
     }
     
     static class CrcData {
-            public List<Car> cars = new LinkedList<Car>();
+            public List<Car> cars = new LinkedList<>();
             public String name;
-            public List<String> regions =  new LinkedList<String>();
+            public List<String> regions =  new LinkedList<>();
     }
 }

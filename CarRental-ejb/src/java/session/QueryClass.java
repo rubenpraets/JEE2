@@ -89,9 +89,10 @@ public class QueryClass {
     
     //TODO niet af
     public String cheapestCarType(Date start, Date end, String region){
-        return (String) em.createQuery("SELECT c.name " + 
+        /*return (String) em.createQuery("SELECT c.name " + 
                                        "FROM CarType c " +
-                                       "WHERE c.region").getSingleResult();
+                                       "WHERE c.region").getSingleResult();*/
+        return null;
     }
     
 }

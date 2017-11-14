@@ -25,4 +25,6 @@ public interface CarRentalSessionRemote {
     
     public List<Reservation> confirmQuotes() throws ReservationException;
     
+    public void checkForAvailableCarTypes(Date start, Date end);
+    
 }
