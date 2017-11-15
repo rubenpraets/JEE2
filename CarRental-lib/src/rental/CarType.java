@@ -9,6 +9,7 @@ public class CarType implements Serializable{
     
     @Id
     private String name;
+    
     private int nbOfSeats;
     private boolean smokingAllowed;
     private double rentalPricePerDay;

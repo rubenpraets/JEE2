@@ -20,10 +20,10 @@ public class CarRentalCompany implements Serializable{
     @Id
     private String name;
     
-    @OneToMany(mappedBy="CarRentalCompany",cascade=ALL)
+    @OneToMany(cascade=ALL)
     private List<Car> cars;
     
-    @ManyToMany(mappedBy="CarRentalCompany", cascade=PERSIST)
+    @ManyToMany(cascade=PERSIST)
     private Set<CarType> carTypes = new HashSet<CarType>();
     
     private List<String> regions;

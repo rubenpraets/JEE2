@@ -73,7 +73,7 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     @Override
     protected void addQuoteToSession(CarRentalSessionRemote session, String name, Date start, Date end, String carType, String region) throws Exception {
-        session.createQuote(region, new ReservationConstraints(start, end, carType, region));
+        session.addQuoteToSession(name, new ReservationConstraints(start, end, carType, region));
     }
 
     @Override
@@ -100,12 +100,14 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     }
     
+    private static int nextuid = 0;
+    
     public static CrcData loadData(String datafile)
             throws NumberFormatException, IOException {
 
         CrcData out = new CrcData();
         StringTokenizer csvReader;
-        int nextuid = 0;
+        
        
         //open file from jar
         BufferedReader in = new BufferedReader(new InputStreamReader(Main.class.getClassLoader().getResourceAsStream(datafile)));

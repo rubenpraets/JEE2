@@ -12,8 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import rental.CarRentalCompany;
 import rental.CarType;
 
@@ -22,12 +26,25 @@ import rental.CarType;
  * @author hp
  */
 public class QueryClass {
-    
-    @PersistenceContext
+
     private EntityManager em;
+    
+    public QueryClass(){
+        this.em = getEntityManager();
+    }
+    
+    private EntityManager getEntityManager() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("CarRental-ejbPU");
+        EntityManager ecm = emf.createEntityManager(); 
+        return ecm;
+    }   
     
     public Map<String,CarRentalCompany> getRentals(){
         Map<String,CarRentalCompany> rentals = new HashMap<>();
+        System.out.println("queryclass print hallo");
+        System.out.println(em + "em print hallo");
+        System.out.println((List<CarRentalCompany>)em.createQuery("SELECT c FROM CarRentalCompany c").getResultList() + "list print hallo");
+        
         for(CarRentalCompany c: (List<CarRentalCompany>)em.createQuery("SELECT c FROM CarRentalCompany c").getResultList()){
             rentals.put(c.getName(),c);
         }

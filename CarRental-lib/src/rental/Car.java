@@ -37,6 +37,10 @@ public class Car implements Serializable{
     	return id;
     }
     
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     /************
      * CAR TYPE *
      ************/
@@ -74,7 +78,7 @@ public class Car implements Serializable{
         reservations.remove(reservation);
     }
 
-    @OneToMany(mappedBy="Car", targetEntity=Reservation.class, cascade=ALL)
+    @OneToMany(mappedBy="car", targetEntity=Reservation.class, cascade=ALL)
     public Set<Reservation> getReservations() {
         return reservations;
     }

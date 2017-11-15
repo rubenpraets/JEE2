@@ -16,10 +16,10 @@ import rental.Reservation;
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
     
-    private QueryClass queryClass = new QueryClass();
-    
     @PersistenceContext
     private EntityManager em;
+    
+    private QueryClass queryClass = new QueryClass();
     
     @Override
     public Set<CarType> getCarTypes(String company) {
@@ -71,7 +71,8 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public void addCarRentalCompany(CarRentalCompany crc) {
-        em.persist(crc);
+        em.merge(crc);
+        
     }
 
     @Override

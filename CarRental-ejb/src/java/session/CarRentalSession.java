@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -41,15 +42,40 @@ public class CarRentalSession implements CarRentalSessionRemote {
         return availableCarTypes;
     }
 
-    @Override
-    public Quote createQuote(String company, ReservationConstraints constraints) throws ReservationException {
+    
+    public Quote createQuote(CarRentalCompany company, ReservationConstraints constraints) throws ReservationException {
         try {
-            Quote out = queryClass.getRental(company).createQuote(constraints, renter);
+            System.out.println("null??");
+            System.out.println(queryClass);
+            System.out.println(company);
+            
+            Quote out = company.createQuote(constraints, renter);
             quotes.add(out);
             return out;
         } catch(Exception e) {
-            throw new ReservationException(e);
+            System.out.println("createquote error");
+            e.printStackTrace();
+            throw new ReservationException("");
         }
+    }
+    
+    @Override
+    public Quote addQuoteToSession(String renter, ReservationConstraints constraints) throws ReservationException{
+        Map<String, CarRentalCompany> crcs = queryClass.getRentals();
+        Quote quote = null;
+        for(CarRentalCompany crc: crcs.values()){
+            try{
+                quote = createQuote(crc, constraints);
+                break;
+            } catch(Exception e){
+                
+            }
+        }
+        
+        if (quote == null) {
+            throw new ReservationException("ReservationSession: impossible to create this quote.");
+	}
+        return quote;
     }
 
     @Override
