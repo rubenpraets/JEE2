@@ -70,12 +70,16 @@ public class Car implements Serializable{
     }
     
     public void addReservation(Reservation res) {
-        reservations.add(res);
+        Set<Reservation> newReservations = getReservations();
+        newReservations.add(res);
+        setReservations(newReservations);
     }
     
     public void removeReservation(Reservation reservation) {
         // equals-method for Reservation is required!
-        reservations.remove(reservation);
+        Set<Reservation> newReservations = getReservations();
+        newReservations.remove(reservation);
+        setReservations(newReservations);
     }
 
     @OneToMany(mappedBy="car", targetEntity=Reservation.class, cascade=ALL)

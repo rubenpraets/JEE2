@@ -94,7 +94,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
         List<Reservation> done = new LinkedList<>();
         try {
             for (Quote quote : quotes) {
-                Reservation r = queryClass.getRental(quote.getRentalCompany().getName()).confirmQuote(quote);
+                Reservation r = quote.getRentalCompany().confirmQuote(quote);
                 done.add(r);
                 em.persist(r);
             }
