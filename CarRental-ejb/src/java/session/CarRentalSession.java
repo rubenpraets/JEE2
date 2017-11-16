@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import rental.CarRentalCompany;
 import rental.CarType;
 import rental.Quote;
@@ -23,6 +25,9 @@ public class CarRentalSession implements CarRentalSessionRemote {
     private String renter;
     private List<Quote> quotes = new LinkedList<Quote>();
     private QueryClass queryClass = new QueryClass();
+    
+    @PersistenceContext
+    private EntityManager em;
 
     //TODO move query
     @Override
@@ -43,7 +48,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
     }
 
     
-    public Quote createQuote(CarRentalCompany company, ReservationConstraints constraints) throws ReservationException {
+    public Quote createQuote(CarRentalCompany company, String renter, ReservationConstraints constraints) throws ReservationException {
         try {
             System.out.println("null??");
             System.out.println(queryClass);
@@ -65,7 +70,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
         Quote quote = null;
         for(CarRentalCompany crc: crcs.values()){
             try{
-                quote = createQuote(crc, constraints);
+                quote = createQuote(crc, renter, constraints);
                 break;
             } catch(Exception e){
                 
@@ -86,10 +91,12 @@ public class CarRentalSession implements CarRentalSessionRemote {
     @Override
     @TransactionAttribute(REQUIRED)
     public List<Reservation> confirmQuotes() throws ReservationException {
-        List<Reservation> done = new LinkedList<Reservation>();
+        List<Reservation> done = new LinkedList<>();
         try {
             for (Quote quote : quotes) {
-                done.add(queryClass.getRental(quote.getRentalCompany().getName()).confirmQuote(quote));
+                Reservation r = queryClass.getRental(quote.getRentalCompany().getName()).confirmQuote(quote);
+                done.add(r);
+                em.persist(r);
             }
         } catch (Exception e) {
             /*for(Reservation r:done)
@@ -116,6 +123,11 @@ public class CarRentalSession implements CarRentalSessionRemote {
         for(CarType c: carTypes){
             System.out.println(c);
         }
+    }
+
+    @Override
+    public String getCheapestCarType(Date start, Date end, String region) {
+        return queryClass.cheapestCarType(start, end, region);
     }
     
 }

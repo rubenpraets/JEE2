@@ -21,7 +21,7 @@ public class Car implements Serializable{
     public Car(int uid, CarType type) {
     	this.id = uid;
         this.type = type;
-        this.reservations = new HashSet<Reservation>();
+        this.reservations = new HashSet<>();
     }
     
     public Car(){

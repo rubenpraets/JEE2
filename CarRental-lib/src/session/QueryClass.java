@@ -78,11 +78,14 @@ public class QueryClass {
     }*/
     
     public int getNbResOfCTInCRC(String companyName, String carType) {
-        return (int) em.createQuery("SELECT COUNT (r) " +
+        long i = (long) em.createQuery("SELECT COUNT (r) " +
                                     "FROM Reservation r " +
                                     "WHERE r.carType.name LIKE :type " +
                                     "AND r.rentalCompany.name LIKE :name").setParameter("type", carType)
-                                    .setParameter("name", companyName).getSingleResult();
+                                    .setParameter("name", companyName)
+                                    .getSingleResult();
+        System.out.println("Dit is de long " + i);
+        return (int) i;
     }
     
     public Set<String> bestClients(){
@@ -104,12 +107,17 @@ public class QueryClass {
                                         .setParameter("company", company).setParameter("year", year).getSingleResult();
     }
     
-    //TODO niet af
     public String cheapestCarType(Date start, Date end, String region){
-        /*return (String) em.createQuery("SELECT c.name " + 
-                                       "FROM CarType c " +
-                                       "WHERE c.region").getSingleResult();*/
-        return null;
+        return (String) em.createQuery("SELECT ct.name " 
+                +                      "FROM CarType ct, Car c, CarRentalCompany crc "
+                +                      "WHERE c IN (crc.cars) AND crc.region like :region AND c.carType = ct "
+                +                      "AND NOT (EXISTS (SELECT r "
+                +                      "                FROM Reservation r "
+                +                      "                WHERE r IN (c.reservations) "
+                +                      "                AND NOT ( r.startDate > :end OR r.endDate < :start))) "
+                +                      "HAVING MIN(ct.rentalPricePerDay)")
+                                       .setParameter("region",region).setParameter("start",start)
+                                       .setParameter("end",end).getSingleResult();
     }
     
 }

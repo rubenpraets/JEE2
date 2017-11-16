@@ -17,7 +17,7 @@ public class Reservation extends Quote {
     @GeneratedValue(strategy=IDENTITY)
     private int id;
     
-    @ManyToOne(cascade=PERSIST)
+    @ManyToOne
     private Car car;
     
     /***************

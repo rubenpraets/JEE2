@@ -71,7 +71,7 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public void addCarRentalCompany(CarRentalCompany crc) {
-        em.merge(crc);
+        em.persist(crc);
         
     }
 

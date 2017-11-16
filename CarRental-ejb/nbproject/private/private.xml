@@ -5,7 +5,8 @@
         <group>
             <file>file:/C:/Users/hp/Documents/Ruben/assignment2/JEE2/CarRental-ejb/src/java/rental/CarRentalCompany.java</file>
             <file>file:/C:/Users/hp/Documents/Ruben/assignment2/JEE2/CarRental-ejb/src/java/session/CarRentalSession.java</file>
-            <file>file:/C:/Users/hp/Documents/Ruben/assignment2/JEE2/CarRental-ejb/src/java/session/QueryClass.java</file>
+            <file>file:/C:/Users/hp/Documents/Ruben/assignment2/JEE2/CarRental-ejb/src/conf/persistence.xml</file>
+            <file>file:/C:/Users/hp/Documents/Ruben/assignment2/JEE2/CarRental-ejb/src/java/session/ManagerSession.java</file>
         </group>
     </open-files>
 </project-private>

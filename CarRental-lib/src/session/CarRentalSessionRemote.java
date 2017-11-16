@@ -27,4 +27,6 @@ public interface CarRentalSessionRemote {
     
     public void checkForAvailableCarTypes(Date start, Date end);
     
+    public String getCheapestCarType(Date start, Date end, String region);
+    
 }
