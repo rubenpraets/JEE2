@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.*;
 import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 public class CarRentalCompany implements Serializable{
@@ -83,7 +84,7 @@ public class CarRentalCompany implements Serializable{
             if(type.getName().equals(carTypeName))
                 return type;
         }
-        throw new IllegalArgumentException("<" + carTypeName + "> No cartype of name " + carTypeName);
+        throw new IllegalArgumentException("<" + carTypeName + "> No cartype of name " + carTypeName + " in company " + this.getName());
     }
 
     public boolean isAvailable(String carTypeName, Date start, Date end) {
@@ -135,7 +136,7 @@ public class CarRentalCompany implements Serializable{
     }
 
     private List<Car> getAvailableCars(String carType, Date start, Date end) {
-        List<Car> availableCars = new LinkedList<Car>();
+        List<Car> availableCars = new LinkedList<>();
         for (Car car : cars) {
             if (car.getType().getName().equals(carType) && car.isAvailable(start, end)) {
                 availableCars.add(car);
@@ -153,6 +154,7 @@ public class CarRentalCompany implements Serializable{
         logger.log(Level.INFO, "<{0}> Creating tentative reservation for {1} with constraints {2}",
                 new Object[]{name, guest, constraints.toString()});
 
+        System.out.println("createquote isavailable "+isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate()));
 
         if (!this.regions.contains(constraints.getRegion()) || !isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate())) {
             throw new ReservationException("<" + name
@@ -183,6 +185,7 @@ public class CarRentalCompany implements Serializable{
 
         Reservation res = new Reservation(quote, car);
         car.addReservation(res);
+        System.out.println("Reservationlist for car of type " + car.getType().getName() + " and company " + this.name + " " + car.getReservations());
         return res;
     }
 

@@ -83,7 +83,7 @@ public class CarRentalCompany implements Serializable{
             if(type.getName().equals(carTypeName))
                 return type;
         }
-        throw new IllegalArgumentException("<" + carTypeName + "> No cartype of name " + carTypeName);
+        throw new IllegalArgumentException("<" + carTypeName + "> No cartype of name " + carTypeName + " in company " + this.getName());
     }
 
     public boolean isAvailable(String carTypeName, Date start, Date end) {
@@ -157,7 +157,7 @@ public class CarRentalCompany implements Serializable{
         logger.log(Level.INFO, "<{0}> Creating tentative reservation for {1} with constraints {2}",
                 new Object[]{name, guest, constraints.toString()});
 
-        System.out.println("createquote isavailable "+isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate()));
+        System.out.println("createquote isavailable " + constraints.getCarType() + " " +isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate()));
         if (!this.regions.contains(constraints.getRegion()) || !isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate())) {
             throw new ReservationException("<" + name
                     + "> No cars available to satisfy the given constraints.");
@@ -187,6 +187,7 @@ public class CarRentalCompany implements Serializable{
 
         Reservation res = new Reservation(quote, car);
         car.addReservation(res);
+        System.out.println("Reservationlist for car of type " + car.getType().getName() + " and company " + this.name + " " + car.getReservations());
         return res;
     }
 
